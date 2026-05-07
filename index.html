@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="sv">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TODODO – Din dagliga planerare</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="app">
+
+      <!-- Vänster panel med välkomstsegment och todo-lista -->
+      <aside class="left-panel">
+
+        <!-- Välkomstsegment med klocka, datum och hälsning -->
+        <section class="today-segment" id="today-segment">
+          <div class="today-meta">
+            <span class="today-weekday" id="today-weekday">Måndag</span>
+            <span class="today-date" id="today-date">1 januari 2026</span>
+          </div>
+          <div class="today-clock" id="today-clock">00:00:00</div>
+          <div class="today-greeting" id="today-greeting">God morgon!</div>
+        </section>
+
+        <!-- Todo-listan med formulär och filterknappar -->
+        <section class="todos-segment">
+          <h2 class="section-title">Mina todos</h2>
+
+          <!-- Formulär för att lägga till en ny todo -->
+          <form class="add-todo-form" id="add-todo-form">
+            <input
+              type="text"
+              id="todo-input"
+              class="todo-input"
+              placeholder="Lägg till en todo…"
+              autocomplete="off"
+              required
+            />
+            <input
+              type="date"
+              id="todo-date"
+              class="todo-date-input"
+              required
+            />
+            <input
+              type="time"
+              id="todo-time"
+              class="todo-time-input"
+            />
+            <button type="submit" class="btn btn-add">
+              <span>+</span> Lägg till
+            </button>
+          </form>
+
+          <!-- Filterknappar för att välja vilka todos som visas -->
+          <div class="todo-filters">
+            <button class="filter-btn active" data-filter="all">Alla</button>
+            <button class="filter-btn" data-filter="today">Idag</button>
+            <button class="filter-btn" data-filter="upcoming">Kommande</button>
+          </div>
+
+          <!-- Todo-korten fylls i av JavaScript -->
+          <ul class="todo-list" id="todo-list">
+          </ul>
+
+          <p class="todo-empty" id="todo-empty">Inga todos att visa 🎉</p>
+        </section>
+      </aside>
+
+      <!-- Höger panel med kalendervisningen -->
+      <main class="right-panel">
+        <section class="calendar-segment">
+
+          <!-- Kalenderrubrik med månad och navigeringsknappar -->
+          <div class="calendar-header">
+            <button class="cal-nav" id="cal-prev" aria-label="Föregående månad">&#8249;</button>
+            <h2 class="cal-month-title" id="cal-month-title">Januari 2026</h2>
+            <button class="cal-nav" id="cal-next" aria-label="Nästa månad">&#8250;</button>
+          </div>
+
+          <!-- Veckodagsrubriker ovanför kalendergallret -->
+          <div class="cal-weekdays">
+            <span>Mån</span>
+            <span>Tis</span>
+            <span>Ons</span>
+            <span>Tor</span>
+            <span>Fre</span>
+            <span>Lör</span>
+            <span>Sön</span>
+          </div>
+
+          <!-- Kalenderns dagceller fylls i av JavaScript -->
+          <div class="cal-grid" id="cal-grid">
+          </div>
+
+          <!-- Förklaring till färgkoderna -->
+          <div class="cal-legend">
+            <span class="legend-dot legend-today"></span><span>Idag</span>
+            <span class="legend-dot legend-has-todos"></span><span>Har todos</span>
+            <span class="legend-dot legend-holiday"></span><span>Helgdag</span>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <!-- Mall för ett todo-kort, klonas av JavaScript för varje todo -->
+    <template id="todo-template">
+      <li class="todo-item" data-id="">
+        <label class="todo-check-label">
+          <input type="checkbox" class="todo-check" />
+          <span class="todo-check-custom"></span>
+        </label>
+        <div class="todo-content">
+          <span class="todo-text"></span>
+          <span class="todo-meta-date"></span>
+        </div>
+        <button class="btn btn-delete" aria-label="Ta bort todo">&#215;</button>
+      </li>
+    </template>
+
+    <!-- Mall för en dagcell i kalendern, klonas av JavaScript -->
+    <template id="cal-day-template">
+      <div class="cal-day">
+        <span class="cal-day-num"></span>
+        <span class="cal-todo-count"></span>
+        <span class="cal-holiday-name"></span>
+      </div>
+    </template>
+
+    <script type="module" src="main.js"></script>
+  </body>
+</html>
