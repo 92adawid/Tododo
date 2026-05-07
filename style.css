@@ -1,0 +1,562 @@
+
+  /* style.css – TODODO | Grafisk profil: mörkt, mjukt och modernt */
+
+/* Variabler för färger, typsnitt och avstånd */
+:root {
+  --bg-app:          #0f1117;
+  --bg-left:         #16181f;
+  --bg-right:        #1c1e28;
+  --bg-card:         #20232e;
+  --bg-card-hover:   #272a38;
+  --accent:          #7c6fef;
+  --accent-light:    #a79cf8;
+  --accent-dim:      rgba(124,111,239,.18);
+  --success:         #4ade80;
+  --danger:          #f87171;
+  --holiday:         #fb923c;
+  --text-primary:    #e8e9f0;
+  --text-secondary:  #8b8fa8;
+  --text-muted:      #555870;
+  --border:          rgba(255,255,255,.07);
+  --radius-sm:       6px;
+  --radius-md:       12px;
+  --radius-lg:       20px;
+  --shadow:          0 4px 24px rgba(0,0,0,.45);
+  --font:            'Segoe UI', system-ui, sans-serif;
+  --transition:      .2s ease;
+}
+
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { font-size: 16px; scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font);
+  background: var(--bg-app);
+  color: var(--text-primary);
+  min-height: 100dvh;
+}
+
+/* Appens yttre skal – delar upp sidan i vänster och höger kolumn */
+.app {
+  display: grid;
+  grid-template-columns: 380px 1fr;
+  min-height: 100dvh;
+}
+
+/* Vänster panel med todo-listan */
+.left-panel {
+  background: var(--bg-left);
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid var(--border);
+  overflow-y: auto;
+}
+
+/* Välkomstsegmentet högst upp till vänster med klocka och datum */
+.today-segment {
+  padding: 2.5rem 2rem 2rem;
+  background: linear-gradient(135deg, #1a1b2e 0%, #16181f 100%);
+  border-bottom: 1px solid var(--border);
+  position: relative;
+  overflow: hidden;
+}
+
+.today-segment::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 20% 50%, rgba(124,111,239,.15) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.today-meta {
+  display: flex;
+  flex-direction: column;
+  gap: .25rem;
+  margin-bottom: .75rem;
+}
+
+.today-weekday {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--accent-light);
+  text-transform: uppercase;
+  letter-spacing: .1em;
+}
+
+.today-date {
+  font-size: .9rem;
+  color: var(--text-secondary);
+}
+
+.today-clock {
+  font-size: 3rem;
+  font-weight: 700;
+  letter-spacing: -.02em;
+  line-height: 1;
+  color: var(--text-primary);
+  font-variant-numeric: tabular-nums;
+}
+
+.today-greeting {
+  margin-top: .6rem;
+  font-size: .95rem;
+  color: var(--text-secondary);
+}
+
+/* Todo-listan med formulär och filterknappar */
+.todos-segment {
+  padding: 1.5rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.section-title {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: .08em;
+}
+
+/* Formuläret för att lägga till en ny todo */
+.add-todo-form {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  grid-template-rows: auto auto auto;
+  gap: .5rem;
+}
+
+.todo-input {
+  grid-column: 1 / 2;
+  grid-row: 1 / 2;
+  padding: .65rem 1rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text-primary);
+  font-size: .95rem;
+  outline: none;
+  transition: border-color var(--transition);
+}
+.todo-input:focus {
+  border-color: var(--accent);
+}
+.todo-input::placeholder { color: var(--text-muted); }
+
+.todo-date-input {
+  grid-column: 1 / 2;
+  grid-row: 2 / 3;
+  padding: .55rem 1rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text-primary);
+  font-size: .9rem;
+  outline: none;
+  transition: border-color var(--transition);
+  color-scheme: dark;
+}
+.todo-date-input:focus { border-color: var(--accent); }
+
+.todo-time-input {
+  grid-column: 1 / 2;
+  grid-row: 3 / 4;
+  padding: .55rem 1rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text-primary);
+  font-size: .9rem;
+  outline: none;
+  transition: border-color var(--transition);
+  color-scheme: dark;
+}
+.todo-time-input:focus { border-color: var(--accent); }
+.todo-time-input::-webkit-calendar-picker-indicator { filter: invert(.6); }
+
+/* Knappar – gemensam bas för alla knappar i appen */
+.btn {
+  border: none;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-family: var(--font);
+  font-size: .9rem;
+  font-weight: 600;
+  transition: background var(--transition), transform .1s;
+}
+.btn:active { transform: scale(.97); }
+
+.btn-add {
+  grid-column: 2 / 3;
+  grid-row: 1 / 4;
+  padding: .65rem 1.1rem;
+  background: var(--accent);
+  color: #fff;
+  white-space: nowrap;
+  align-self: stretch;
+}
+.btn-add:hover { background: var(--accent-light); }
+
+.btn-delete {
+  background: transparent;
+  color: var(--text-muted);
+  font-size: 1.2rem;
+  padding: .2rem .5rem;
+  border-radius: var(--radius-sm);
+  flex-shrink: 0;
+  line-height: 1;
+}
+.btn-delete:hover { background: rgba(248,113,113,.15); color: var(--danger); }
+
+/* Filterknappar för att visa alla, dagens eller kommande todos */
+.todo-filters {
+  display: flex;
+  gap: .5rem;
+}
+
+.filter-btn {
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text-secondary);
+  padding: .35rem .85rem;
+  border-radius: 99px;
+  cursor: pointer;
+  font-family: var(--font);
+  font-size: .82rem;
+  font-weight: 500;
+  transition: background var(--transition), color var(--transition), border-color var(--transition);
+}
+.filter-btn:hover {
+  background: var(--accent-dim);
+  color: var(--accent-light);
+  border-color: var(--accent);
+}
+.filter-btn.active {
+  background: var(--accent-dim);
+  color: var(--accent-light);
+  border-color: var(--accent);
+}
+
+/* Listan med alla todo-kort */
+.todo-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: .5rem;
+  flex: 1;
+  overflow-y: auto;
+}
+
+.todo-empty {
+  text-align: center;
+  color: var(--text-muted);
+  font-size: .9rem;
+  padding: 1.5rem 0;
+  display: none;
+}
+
+/* Ett enskilt todo-kort */
+.todo-item {
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+  padding: .75rem 1rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  transition: background var(--transition), border-color var(--transition);
+}
+.todo-item:hover {
+  background: var(--bg-card-hover);
+  border-color: rgba(124,111,239,.3);
+}
+.todo-item.done .todo-text {
+  text-decoration: line-through;
+  color: var(--text-muted);
+}
+.todo-item.done { opacity: .65; }
+
+/* Egendesignad checkbox som rund cirkel */
+.todo-check-label {
+  position: relative;
+  flex-shrink: 0;
+  cursor: pointer;
+}
+.todo-check { display: none; }
+.todo-check-custom {
+  display: block;
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--text-muted);
+  border-radius: 50%;
+  transition: background var(--transition), border-color var(--transition);
+}
+.todo-check:checked + .todo-check-custom {
+  background: var(--accent);
+  border-color: var(--accent);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M2 6l3 3 5-5' stroke='white' stroke-width='2' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 70%;
+}
+
+.todo-content {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: .15rem;
+}
+.todo-text {
+  font-size: .95rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.todo-meta-date {
+  font-size: .75rem;
+  color: var(--accent-light);
+  opacity: .8;
+}
+
+/* Höger panel med kalendervisningen */
+.right-panel {
+  background: var(--bg-right);
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 2.5rem 2rem;
+  overflow-y: auto;
+}
+
+.calendar-segment {
+  width: 100%;
+  max-width: 680px;
+}
+
+/* Kalenderrubrik med månad och navigeringsknappar */
+.calendar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+}
+
+.cal-month-title {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.cal-nav {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  color: var(--text-primary);
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-sm);
+  font-size: 1.4rem;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  transition: background var(--transition), border-color var(--transition);
+  line-height: 1;
+}
+.cal-nav:hover {
+  background: var(--accent-dim);
+  border-color: var(--accent);
+  color: var(--accent-light);
+}
+
+/* Veckodagsrubriker ovanför kalendergallret */
+.cal-weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  text-align: center;
+  font-size: .75rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  margin-bottom: .5rem;
+  gap: 4px;
+}
+
+/* Rutnätet med alla dagar i månaden */
+.cal-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+}
+
+/* En enskild dagcell i kalendern */
+.cal-day {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: .5rem .4rem .4rem;
+  min-height: 72px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  cursor: default;
+  transition: background var(--transition), border-color var(--transition);
+  position: relative;
+  overflow: hidden;
+}
+.cal-day:hover {
+  background: var(--bg-card-hover);
+}
+
+.cal-day--empty {
+  background: transparent;
+  border-color: transparent;
+  pointer-events: none;
+}
+
+.cal-day-num {
+  font-size: .85rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  line-height: 1;
+}
+
+.cal-todo-count {
+  display: inline-block;
+  background: var(--accent);
+  color: #fff;
+  font-size: .65rem;
+  font-weight: 700;
+  border-radius: 99px;
+  padding: .05rem .38rem;
+  width: fit-content;
+  line-height: 1.5;
+}
+
+.cal-holiday-name {
+  font-size: .6rem;
+  color: var(--holiday);
+  line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: block;
+}
+
+/* Tillstånd: idag, helgdag och dagar med todos */
+.cal-day--today {
+  border-color: var(--accent);
+  background: rgba(124,111,239,.12);
+}
+.cal-day--today .cal-day-num {
+  color: var(--accent-light);
+}
+
+.cal-day--holiday {
+  border-color: rgba(251,146,60,.35);
+}
+.cal-day--holiday .cal-day-num {
+  color: var(--holiday);
+}
+
+.cal-day--has-todos::before {
+  content: '';
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 6px;
+  height: 6px;
+  background: var(--accent);
+  border-radius: 50%;
+}
+
+/* Förklaring till färgkoderna under kalendern */
+.cal-legend {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 1.25rem;
+  font-size: .78rem;
+  color: var(--text-muted);
+  flex-wrap: wrap;
+}
+
+.legend-dot {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+.legend-today    { background: var(--accent); }
+.legend-has-todos{ background: var(--accent-light); }
+.legend-holiday  { background: var(--holiday); }
+
+/* Scrollbar – smal och diskret */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 99px; }
+::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
+
+/* Responsivt: tablets och mellanstora skärmar */
+@media (max-width: 820px) {
+  .app {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr;
+  }
+
+  .left-panel {
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .right-panel {
+    padding: 1.5rem 1rem;
+  }
+
+  .cal-day { min-height: 56px; }
+}
+
+/* Responsivt: mindre mobiler */
+@media (max-width: 500px) {
+  .today-clock { font-size: 2.2rem; }
+  .today-segment { padding: 1.5rem 1rem 1rem; }
+  .todos-segment { padding: 1rem; }
+
+  .add-todo-form {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto auto auto;
+  }
+  .btn-add {
+    grid-column: 1 / 2;
+    grid-row: 4 / 5;
+    width: 100%;
+  }
+  .todo-date-input {
+    grid-column: 1 / 2;
+    grid-row: 2 / 3;
+  }
+  .todo-time-input {
+    grid-column: 1 / 2;
+    grid-row: 3 / 4;
+  }
+
+  .cal-weekdays span { font-size: .6rem; }
+  .cal-day { min-height: 44px; padding: .3rem; }
+  .cal-day-num { font-size: .75rem; }
+  .cal-todo-count { font-size: .55rem; }
+  .cal-holiday-name { display: none; }
+  .cal-month-title { font-size: 1.1rem; }
+
+  .todo-filters { flex-wrap: wrap; }
+}
+
+/* Responsivt: minsta möjliga bredd 375px */
+@media (max-width: 375px) {
+  .cal-weekdays { gap: 2px; }
+  .cal-grid     { gap: 2px; }
+}
